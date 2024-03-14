@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,12 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Apps
+    'waitlist',
+
+    # Third Party
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -74,9 +82,18 @@ WSGI_APPLICATION = 'provinear_api.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'waitlist': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+
+    "default": {
+        "NAME": "provinear",
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "PASSWORD": "postgres" if DEBUG else os.environ.get("DEFAULT_DATABASE_PASSWORD"),
+        'HOST': 'localhost' if DEBUG else os.environ.get("DEFAULT_DATABASE_HOST"),
+        'PORT': '5432' if DEBUG else os.environ.get("DEFAULT_DATABASE_PORT")
     }
 }
 
@@ -121,3 +138,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Django rest_framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+# API Documentation
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Provinear - near you, for you",
+    "DESCRIPTION": "Multipurpose Marketplace Application API",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}

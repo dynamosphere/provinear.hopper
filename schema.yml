@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Provinear - near you, for you
+  version: 1.0.0
+  description: Multipurpose Marketplace Application API
+paths: {}
+components: {}
