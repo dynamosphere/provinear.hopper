@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Provinear - near you, for you
+  version: 1.0.0
+  description: Multipurpose Marketplace Application API
+paths:
+  /api/v1/waitlist/:
+    post:
+      operationId: api_v1_waitlist_create
+      description: Join waiting list
+      summary: Add user to waiting list
+      tags:
+      - Wait List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaitList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WaitList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WaitList'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaitList'
+          description: ''
+components:
+  schemas:
+    WaitList:
+      type: object
+      description: Model Serializer for WaitList Model
+      properties:
+        email:
+          type: string
+          format: email
+          description: Enter your email address
+          maxLength: 254
+        name:
+          type: string
+          title: Full name
+          description: Enter your full name
+          maxLength: 128
+        expectation:
+          type: string
+          nullable: true
+          description: What is your expectation from joining Provinear?
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date Joined
+      required:
+      - date_created
+      - email
+      - name
