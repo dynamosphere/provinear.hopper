@@ -90,7 +90,7 @@ DATABASES = {
     "default": {
         "NAME": "provinear",
         "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
+        "USER": "postgres" if DEBUG else os.environ.get("DEFAULT_DATABASE_USER"),
         "PASSWORD": "postgres" if DEBUG else os.environ.get("DEFAULT_DATABASE_PASSWORD"),
         'HOST': 'localhost' if DEBUG else os.environ.get("DEFAULT_DATABASE_HOST"),
         'PORT': '5432' if DEBUG else os.environ.get("DEFAULT_DATABASE_PORT")
