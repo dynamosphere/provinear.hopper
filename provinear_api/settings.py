@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     # Apps
     'waitlist',
+    'account',
+    'appdata',
 
     # Third Party
     'rest_framework',
@@ -154,3 +156,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+
+# Authentication User Model
+AUTH_USER_MODEL = 'appdata.Provineer'

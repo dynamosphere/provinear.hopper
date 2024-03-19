@@ -12,6 +12,7 @@ class ApiRoot(APIView):
     def get(self, request, format=None):
         return Response(
             {
-                "waitlist": get_app_named_urls('waitlist.urls', request, format=format),
+                'waitlist': get_app_named_urls('waitlist.urls', request, format=format),
+                'provinear': get_app_named_urls('account.urls', request, format=format)
             }
         )

@@ -8,6 +8,7 @@ Date created: March 13, 2024
 
 from django.core.validators import EmailValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class WaitList(models.Model):
@@ -15,31 +16,31 @@ class WaitList(models.Model):
 
     Attributes:
         email (str): The email address of the user joining the wait list
-        name (str): The name of the user joining the wait list
+        full_name (str): The full name of the user joining the wait list
         expectation (str): Users can optionally give their expectation from joining Provinear
     """
 
     email = models.EmailField(
-        verbose_name='Email',
+        verbose_name=_('Email'),
         primary_key=True,
-        help_text='Enter your email address',
+        help_text=_('Enter your email address'),
         validators=[EmailValidator(message="Enter a valid email address")]
     )
-    name = models.CharField(
-        verbose_name='Full name',
-        help_text='Enter your full name',
+    full_name = models.CharField(
+        verbose_name=_('Full name'),
+        help_text=_('Enter your full name'),
         max_length=128,
         blank=False,
         null=False
     )
     expectation = models.TextField(
-        verbose_name='Expectation',
-        help_text='What is your expectation from joining Provinear?',
+        verbose_name=_('Expectation'),
+        help_text=_('What is your expectation from joining Provinear?'),
         blank=True,
         null=True
     )
     date_created = models.DateTimeField(
-        verbose_name='Date Joined',
+        verbose_name=_('Date Joined'),
         auto_now_add=True,
         blank=True,
         null=False,
@@ -51,4 +52,4 @@ class WaitList(models.Model):
         verbose_name_plural = 'Wait Lists'
 
     def __str__(self):
-        return f"WaitList<email='{self.email}', name='{self.name}'>"
+        return f"WaitList<email='{self.email}', name='{self.full_name}'>"

@@ -27,5 +27,6 @@ urlpatterns = [
     path("api/v1/schema/", view=SpectacularAPIView.as_view(), name="schema"),
     path("api/v1/schema/docs/", view=SpectacularSwaggerView.as_view(url_name="schema")),
     path('api/v1/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('api/v1/waitlist/', include('waitlist.urls'), name='waitlist')
+    path('api/v1/waitlist/', include('waitlist.urls'), name='waitlist'),
+    path('api/v1/provineer/', include('account.urls'), name='provineer')
 ]
