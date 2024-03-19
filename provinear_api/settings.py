@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&u(v04t#bkhc%gq*mn6(%bh@&scb95w5_&rp@6f7e+n&+k5lfv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.provinear.com', 'hopper.provinear.com', 'lovelace.provinear.com', 'provinear.com']
 
 
 # Application definition
