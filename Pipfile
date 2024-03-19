@@ -8,6 +8,7 @@ django-rest-framework = "*"
 django = "*"
 drf-spectacular = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 
