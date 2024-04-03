@@ -17,7 +17,9 @@ class WaitList(models.Model):
     Attributes:
         email (str): The email address of the user joining the wait list
         full_name (str): The full name of the user joining the wait list
-        expectation (str): Users can optionally give their expectation from joining Provinear
+        interested_in_buying (bool): Whether the user is interested in buying on Provinear
+        interested_in_selling (bool): Whether the user is interested in selling on Provinear
+        receive_updates (bool): Whether the user is interested in receiving updates and notification on Provinear
     """
 
     email = models.EmailField(
@@ -33,11 +35,24 @@ class WaitList(models.Model):
         blank=False,
         null=False
     )
-    expectation = models.TextField(
-        verbose_name=_('Expectation'),
-        help_text=_('What is your expectation from joining Provinear?'),
+    interested_in_buying = models.BooleanField(
+        verbose_name='Interested in Buying',
+        help_text='Are you interested in buying on Provinear?',
+        blank=False,
+        null=False
+    )
+    interested_in_selling = models.BooleanField(
+        verbose_name='Interested in Selling',
+        help_text='Are you interested in selling on Provinear?',
+        blank=False,
+        null=False
+    )
+    receive_updates = models.BooleanField(
+        verbose_name='Receive updates',
+        help_text='Receive updates and notification from Provinear?',
         blank=True,
-        null=True
+        null=False,
+        default=False
     )
     date_created = models.DateTimeField(
         verbose_name=_('Date Joined'),

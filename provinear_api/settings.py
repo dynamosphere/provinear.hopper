@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&u(v04t#bkhc%gq*mn6(%bh@&scb95w5_&rp@6f7e+n&+k5lfv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'api.provinear.com', 'hopper.provinear.com', 'lovelace.provinear.com', 'provinear.com']
 
 
 # Application definition
@@ -92,10 +92,10 @@ DATABASES = {
     "default": {
         "NAME": "provinear",
         "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
-        "PASSWORD": "postgres" if DEBUG else os.environ.get("DEFAULT_DATABASE_PASSWORD"),
-        'HOST': 'localhost' if DEBUG else os.environ.get("DEFAULT_DATABASE_HOST"),
-        'PORT': '5432' if DEBUG else os.environ.get("DEFAULT_DATABASE_PORT")
+        "USER": os.environ.get("DEFAULT_DATABASE_USER", "postgres"),
+        "PASSWORD": os.environ.get("DEFAULT_DATABASE_PASSWORD", "postgres"),
+        "HOST": os.environ.get("DEFAULT_DATABASE_HOST", "localhost"),
+        'PORT': os.environ.get("DEFAULT_DATABASE_PORT", "5432")
     }
 }
 
