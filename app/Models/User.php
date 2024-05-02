@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\EmailVerificationNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,6 +59,12 @@ class User extends Authenticatable implements MustVerifyEmail
         static::creating(function ($model){
             $model->id = Str::uuid();
         });
+    }
+
+    // Method to send email verification
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new EmailVerificationNotification());
     }
 
     public function contacts(): HasMany
