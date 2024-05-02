@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -46,6 +48,40 @@ class AuthenticationController extends Controller
             'token_type'    => 'Bearer'
         ]);
     }
+
+    /**
+     * Verify the user's email address.
+     *
+     * @param EmailVerificationRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyEmail(EmailVerificationRequest $request) {
+        $request->fulfill();
+        event(new Verified($request->user()));
+        return response()->json([
+            "message" => "Email verified successfully"
+        ], 202);
+    }
+
+    /**
+     * Resend the verification email to the user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resendVerificationEmail(Request $request) {
+        if ($request->user()->hasVerifiedEmail()){
+            $request->user()->sendEmailVerificationNotification();
+        
+            return response()->json([
+                "message" => "Email verification link sent successfully"
+            ], 200);
+        }
+        return response()->json([
+            "message" => "Your email is verified already"
+        ], 400);
+    }
+
 
     /**
      * Log in a user.
