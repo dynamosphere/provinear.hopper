@@ -1,6 +1,7 @@
 <?php
 
-use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
+// use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
+use \App\Http\Middleware\MyRestrictedDocsAccess;
 
 return [
     /*
@@ -35,7 +36,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => 'Everything you need is here',
+        'description' => 'Everything you need is here. <a href="'. env("APP_URL").'/home">Go home</a>',
     ],
 
     /*
@@ -76,7 +77,8 @@ return [
 
     'middleware' => [
         'web',
-        RestrictedDocsAccess::class,
+        // RestrictedDocsAccess::class,
+        MyRestrictedDocsAccess::class,
     ],
 
     'extensions' => [],
