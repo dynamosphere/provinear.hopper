@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(replace: [
             TrustProxies::class => MyTrustProxies::class,
         ]);
+        $middleware->trustHosts(at: [env('APP_HOST', 'localhost:8000')]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
