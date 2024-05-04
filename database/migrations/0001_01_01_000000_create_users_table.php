@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('user', function (Blueprint $table) {
+            $table->uuid('user_id')->primary();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
             $table->date('date_of_birth')->nullable();
-            $table->string('phone_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('gender', ['male', 'female', 'other']);
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('last_login');
+            $table->string('profile_picture_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -45,7 +48,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('user');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_contacts', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('kyc_verification_option', function (Blueprint $table) {
+            $table->uuid('verification_option_id')->primary();
+            $table->string('option_name', 64)->nullable(false);
+            $table->text('description');
+            $table->boolean('available')->default(true);
             $table->timestamps();
-            $table->string('contact');
-            $table->foreignIdFor(User::class, 'user')->nullable(false)->constrained();
-            $table->char('type', 32);
-            $table->char('contact_provider', 64);
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_contacts');
+        Schema::dropIfExists('kyc_verification_option');
     }
 };

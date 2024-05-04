@@ -12,13 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_contacts', function (Blueprint $table) {
+        Schema::create('provider', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignIdFor(User::class, 'user')->unique()->nullable(false)->constrained();
+            $table->string('portrait_url')->nullable();
             $table->timestamps();
-            $table->string('contact');
-            $table->foreignIdFor(User::class, 'user')->nullable(false)->constrained();
-            $table->char('type', 32);
-            $table->char('contact_provider', 64);
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_contacts');
+        Schema::dropIfExists('providers');
     }
 };

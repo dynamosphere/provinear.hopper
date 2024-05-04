@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Provider;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_contacts', function (Blueprint $table) {
+        Schema::create('shops', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignIdFor(Provider::class, 'provider')->nullable()
+                ->constrained()->cascadeOnUpdate()->restrictOnDelete();
+            $table->string('name', 512)->nullable(false);
+            $table->text('shop_description');
+            $table->string('logo_url')->nullable();
             $table->timestamps();
-            $table->string('contact');
-            $table->foreignIdFor(User::class, 'user')->nullable(false)->constrained();
-            $table->char('type', 32);
-            $table->char('contact_provider', 64);
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_contacts');
+        Schema::dropIfExists('shops');
     }
 };

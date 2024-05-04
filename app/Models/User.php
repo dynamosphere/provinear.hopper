@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'first_name',
+        'last_name',
+        'date_of_birth',
+        'gender',
     ];
 
     /**
@@ -52,16 +58,18 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    protected static function boot (): void
-    {
-        parent::boot();
-        static::creating(function ($model){
-            $model->id = Str::uuid();
-        });
-    }
-
     public function contacts(): HasMany
     {
         return $this->hasMany(UserContact::class);
+    }
+
+    public function provider(): HasOne
+    {
+        return $this->hasOne(Provider::class, 'provider_id', 'user_id');
+    }
+
+    public function userKyc(): Hasone
+    {
+        return $this->hasOne(UserKYC::class, 'verification_option_id', 'user_id');
     }
 }

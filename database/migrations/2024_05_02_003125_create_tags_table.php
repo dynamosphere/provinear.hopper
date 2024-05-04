@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_contacts', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('tags', function (Blueprint $table) {
+            $table->char('id', 64)->primary();
+            $table->char('name',64)->nullable(false)->unique();
+            $table->text('description')->nullable();
+            $table->foreignIdFor(Tag::class, 'parent')->nullable()->constrained();
             $table->timestamps();
-            $table->string('contact');
-            $table->foreignIdFor(User::class, 'user')->nullable(false)->constrained();
-            $table->char('type', 32);
-            $table->char('contact_provider', 64);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_contacts');
+        Schema::dropIfExists('tags');
     }
 };
