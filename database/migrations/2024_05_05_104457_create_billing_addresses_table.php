@@ -18,6 +18,9 @@ return new class extends Migration
                 ->constrained('user', 'user_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone')->nullable();
             $table->text('street')->nullable(false);
             $table->string('city')->nullable(false);
             $table->string('state')->nullable(false);

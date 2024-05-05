@@ -21,7 +21,10 @@ class BillingAddress extends Model
         'street',
         'city',
         'state',
-        'postal_code'
+        'postal_code',
+        'first_name',
+        'last_name',
+        'phone'
     ];
 
     public function user(): BelongsTo
