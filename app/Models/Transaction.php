@@ -7,26 +7,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Tag extends Model
+class Transaction extends Model
 {
     use HasFactory, HasUuids;
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $primaryKey = 'tag_id';
-
-    protected $table = 'tag';
+    protected $primaryKey = 'transaction_id';
+    protected $table = 'transaction';
 
     protected $fillable = [
-        'tag_id',
-        'tag_name',
-        'tag_description',
-        'owner_id',
-        'internal'
+        'order_id',
+        'amount',
+        'payment_method',
+        'payment_detail',
+        'status'
     ];
 
-    public function owner(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id', 'user_id');
+        return $this->belongsTo(ProductOrder::class, 'order_id', 'order_id');
     }
 }

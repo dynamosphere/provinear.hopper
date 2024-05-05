@@ -2,25 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class ProductOrder extends Model
+class BillingAddress extends Model
 {
     use HasFactory, HasUuids;
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $primaryKey = 'order_id';
-    protected $table = 'product_order';
+    protected $primaryKey = 'billing_address_id';
+    protected $table = 'billing_address';
 
     protected $fillable = [
         'user_id',
-        'billing_address_id'
+        'street',
+        'city',
+        'state',
+        'postal_code'
     ];
 
     public function user(): BelongsTo
@@ -28,8 +29,4 @@ class ProductOrder extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    public function transaction(): HasOne
-    {
-        return $this->hasOne(Transaction::class, 'order_id', 'order_id');
-    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\KycApprovalStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -28,6 +29,12 @@ return new class extends Migration
                 ->constrained('kyc_verification_option', 'verification_option_id')
                 ->restrictOnDelete()
                 ->cascadeOnDelete();
+            $table->string('identity_number', 255)->nullable(false);
+            $table->string('identity_card_front_image_url');
+            $table->string('identity_card_back_image_url');
+            $table->string('customer_image_url');
+            $table->enum('status', KycApprovalStatus::values())->default(KycApprovalStatus::PENDING);
+            $table->dateTime('date_approved');
             $table->timestamps();
         });
     }

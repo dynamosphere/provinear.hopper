@@ -7,23 +7,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductCategory extends Model
+class CartItem extends Model
 {
     use HasFactory, HasUuids;
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $primaryKey = 'product_category_id';
-    protected $table = 'product_category';
+    protected $primaryKey = 'cart_item_id';
+    protected $table = 'cart_item';
 
     protected $fillable = [
-        'category_id',
-        'product_id'
+        'cart_id',
+        'product_id',
+        'quantity'
     ];
 
-    public function category(): BelongsTo
+    public function cart(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(UserCart::class, 'cart_id', 'cart_id');
     }
 
     public function product(): BelongsTo

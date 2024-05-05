@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provider', function (Blueprint $table) {
-            $table->uuid('provider_id')->primary();
-            $table->foreignUuid( 'user_id')
-                ->unique()
+        Schema::create('product_image', function (Blueprint $table) {
+            $table->uuid('product_image_id')->primary();
+            $table->foreignUuid('product_id')
                 ->nullable(false)
-                ->constrained('user', 'user_id')
+                ->constrained('product', 'product_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('portrait_url')->nullable();
-            $table->string('badge')->nullable();
+            $table->string('image_url')->nullable(false);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provider');
+        Schema::dropIfExists('product_image');
     }
 };

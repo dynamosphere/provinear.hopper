@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public $incrementing = false;
     protected $keyType = 'string';
     protected $primaryKey = 'user_id';
+    protected $table = 'user';
 
     /**
      * The attributes that are mass assignable.
@@ -72,11 +73,36 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function provider(): HasOne
     {
-        return $this->hasOne(Provider::class, 'provider_id', 'user_id');
+        return $this->hasOne(Provider::class, 'user_id', 'user_id');
     }
 
     public function userKyc(): Hasone
     {
-        return $this->hasOne(UserKYC::class, 'verification_option_id', 'user_id');
+        return $this->hasOne(UserKYC::class, 'user_id', 'user_id');
+    }
+
+    public function settings(): HasMany
+    {
+        return $this->hasMany(UserSetting::class, 'user_id', 'user_id');
+    }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class, 'owner_id', 'user_id');
+    }
+
+    public function cart(): HasOne
+    {
+        return $this->hasOne(UserCart::class, 'cart_id', 'user_id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(ProductOrder::class, 'user_id', 'user_id');
+    }
+
+    public function billingAddresses(): HasMany
+    {
+        return $this->hasMany(BillingAddress::class, 'user_id', 'user_id');
     }
 }

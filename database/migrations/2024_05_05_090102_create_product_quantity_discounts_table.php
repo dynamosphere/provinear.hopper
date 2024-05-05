@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provider', function (Blueprint $table) {
-            $table->uuid('provider_id')->primary();
-            $table->foreignUuid( 'user_id')
-                ->unique()
+        Schema::create('product_quantity_discount', function (Blueprint $table) {
+            $table->uuid('product_quantity_discount_id')->primary();
+            $table->foreignUuid('product_id')
                 ->nullable(false)
-                ->constrained('user', 'user_id')
+                ->constrained('product', 'product_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('portrait_url')->nullable();
-            $table->string('badge')->nullable();
+            $table->integer('quantity', false, true)->default(0);
+            $table->decimal('percentage_discount', 10)->default(0.0);
+            $table->boolean('available')->default(true);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provider');
+        Schema::dropIfExists('product_quantity_discount');
     }
 };

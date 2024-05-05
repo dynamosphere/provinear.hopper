@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Enums\ContactType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_contact', function (Blueprint $table) {
-            $table->uuid('contact_id')->primary();
+        Schema::create('user_setting', function (Blueprint $table) {
+            $table->uuid('user_setting_id')->primary();
             $table->foreignUuid('user_id')
+                ->nullable(false)
                 ->constrained('user', 'user_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->enum('type', ContactType::values())->nullable(false);
-            $table->string('contact', 255)->nullable(false);
-            $table->string('provider', 64)->nullable();
+            $table->string('key')->nullable(false);
+            $table->string('value');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_contact');
+        Schema::dropIfExists('user_setting');
     }
 };

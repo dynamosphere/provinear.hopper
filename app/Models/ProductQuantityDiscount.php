@@ -7,26 +7,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Tag extends Model
+class ProductQuantityDiscount extends Model
 {
     use HasFactory, HasUuids;
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $primaryKey = 'tag_id';
-
-    protected $table = 'tag';
+    protected $primaryKey = 'product_quantity_discount';
+    protected $table = 'product_quantity_discount_id';
 
     protected $fillable = [
-        'tag_id',
-        'tag_name',
-        'tag_description',
-        'owner_id',
-        'internal'
+        'product_id',
+        'quantity',
+        'percentage_discount',
+        'available'
     ];
 
-    public function owner(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id', 'user_id');
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
     }
 }

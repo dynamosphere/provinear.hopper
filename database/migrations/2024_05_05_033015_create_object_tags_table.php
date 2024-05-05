@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\TaggableObject;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,16 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provider', function (Blueprint $table) {
-            $table->uuid('provider_id')->primary();
-            $table->foreignUuid( 'user_id')
-                ->unique()
+        Schema::create('object_tag', function (Blueprint $table) {
+            $table->uuid('object_tag_id')->primary();
+            $table->uuid('object_id')->nullable(false);
+            $table->foreignUuid('tag_id')
                 ->nullable(false)
-                ->constrained('user', 'user_id')
+                ->constrained('tag', 'tag_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('portrait_url')->nullable();
-            $table->string('badge')->nullable();
+            $table->enum('object_type', TaggableObject::values());
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provider');
+        Schema::dropIfExists('object_tag');
     }
 };
