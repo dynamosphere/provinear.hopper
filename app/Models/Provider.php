@@ -4,18 +4,21 @@ namespace App\Models;
 
 // This model represents the Seller Profile
 
+use App\Traits\HasFile;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Provider extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasFile;
 
     public $incrementing = false;
+    public $uploadDir = "public/providers_portraits";
     protected $keyType = 'string';
     protected $primaryKey = 'provider_id';
     protected $table = 'provider';
@@ -45,6 +48,11 @@ class Provider extends Model
     {
         // To be implemented
         return 100;
+    }
+
+    public function shops(): HasMany
+    {
+        return $this->hasMany(Shop::class, 'provider_id');
     }
 
     public function contacts(): HasManyThrough

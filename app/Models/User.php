@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     protected $primaryKey = 'user_id';
     protected $table = 'user';
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,8 +33,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'last_name',
         'email',
         'password',
-        'first_name',
-        'last_name',
         'date_of_birth',
         'gender',
     ];
