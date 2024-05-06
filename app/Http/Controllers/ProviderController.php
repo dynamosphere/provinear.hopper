@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProviderResource;
 use App\Services\ProviderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProviderController extends Controller
 {
@@ -15,19 +19,32 @@ class ProviderController extends Controller
     }
 
     /**
+     * Get the current provider
+     */
+    public function currentProvider(Request $request)
+    {
+        $provider = $request->user()->provider;
+        return new ProviderResource($provider);
+    }
+
+    /**
      * Activate a provider account for a user
      */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'exists:users,id|unique:providers,user_id|required|string',
             'portrait' => 'image|mimes:png,jpg|max:2048',
         ]);
 
         if ($request->hasFile('portrait')){
             $data['portrait_url'] = $this->service->uploadPortrait($request->file('portrait'));
         };
+        $data['user_id'] = $request->user()->user_id;
+        if ($this->service->hasProvider($data)){
+            return response()->json(['message' => "The provider account has already been activated"], 409);
+        }
         $provider = $this->service->activateProvider($data);
+        
         return new ProviderResource($provider);
     }
 

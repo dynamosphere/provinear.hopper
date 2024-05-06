@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFile;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,9 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shop extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasFile;
 
     public $incrementing = false;
+    public $uploadDir = 'public/shop_brand_images';
     protected $keyType = 'string';
     protected $primaryKey = 'shop_id';
     protected $table = 'shop';

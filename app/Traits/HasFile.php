@@ -18,12 +18,13 @@ trait HasFile
      */
     public function uploadFile(UploadedFile $file, $folder)
     {
+        $_uploadDir = "public/files";
 
         $filename = $file->getClientOriginalName();
         $fileNameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
         $fileExt = $file->getClientOriginalExtension();
         $newFileName = time().'_'.str_replace(' ','_', $fileNameWithoutExt).'.'.$fileExt;
-        $file_path = $file->storeAs($folder, $newFileName);
+        $file_path = $file->storeAs($folder ?? $this->uploadDir ?? $_uploadDir, $newFileName);
         
         return $file_path;
     }
@@ -42,5 +43,12 @@ trait HasFile
         }
 
         return null;
+    }
+
+    /**
+     * Upload and stire a file to get the storage url
+     */
+    public function uploadAndStoreFile(UploadedFile $file, $folder=null){
+        return $this->getFileUrl($this->uploadFile($file, $folder));
     }
 }

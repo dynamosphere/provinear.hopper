@@ -30,12 +30,19 @@ class ProviderRepository
         if($provider && $portrait_url){
             $provider->portrait_url = $portrait_url;
             if ($provider->save()){
-                return $$provider->portrait_url;
+                return $provider->portrait_url;
             }
         }
         return null;
     }
 
+    /**
+     * Find a provider using the user_id
+     */
+public function find ($user_id)
+{
+    return $this->provider->find(['user_id' => $user_id]);
+}
     /**
      * Create a new provider
      */

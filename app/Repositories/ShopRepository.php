@@ -2,16 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Models\Provider;
 use App\Models\Shop;
 
 class ShopRepository
 {
+    protected $shop;
     /**
      * Create a new class instance.
      */
-    public function __construct()
+    public function __construct(Shop $shop)
     {
-        //
+        $this->shop = $shop;
     }
 
     /**
@@ -27,5 +29,30 @@ class ShopRepository
             'brand_logo_url' => $shopData["brand_logo_url"],
             'brand_cover_image_url' => $shopData["brand_cover_image_url"]
         ]);
+    }
+
+    /**
+     * Get all the shops that belongs to this provider
+     */
+    public function allProvidersShops(Provider $provider)
+    {
+        return $provider->shops;
+    }
+
+    /**
+     * Create new shop
+     */
+    public function create($data)
+    {
+        return $this->shop->create($data);
+    }
+
+    /**
+     * Update shop
+     */
+    public function update(Shop $shop, $data)
+    {
+        $shop->update($data);
+        return $shop;
     }
 }

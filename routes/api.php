@@ -32,7 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
 /***
  * Provider Management
  */
-Route::controller(ProviderController::class)->prefix('provider')->name('provider.')->group(function () {
+Route::controller(ProviderController::class)->middleware('auth:sanctum')->prefix('provider')->name('provider.')->group(function () {
+    Route::get('/me', 'currentProvider')->name('me');
     Route::post("/activate-account", 'store')->name('activate-account');
     Route::put("/update-picture", 'updatePicture')->middleware('provider')->name('update-picture');
 });
@@ -40,16 +41,12 @@ Route::controller(ProviderController::class)->prefix('provider')->name('provider
 /**
  * Shop Management
  */
+Route::apiResource('providers.shops', ShopController::class)->middleware(['auth:sanctum', 'provider'])->shallow();
 Route::controller(ShopController::class)->middleware(['auth:sanctum', 'provider'])->prefix('shops')->name('shops.')->group(function () {
-    Route::get("", 'index')->name('index');
-    Route::post("", 'store')->name('store');
-    Route::get("{shop}", 'show')->name('show');
-    Route::put("{shop}", 'update')->name('update');
-    Route::delete("{shop}", 'destroy')->name('destroy');
-    Route::post("/{shop}/update-cover-image", 'updateCoverImage')->name('update-cover-image');
-    Route::post("/{shop}/update-logo", 'updateLogo')->name('update-logo');
-    Route::post("/{shop}/update-opening-hours", 'updateOpeningHours')->name('update-opening-hours');
-    Route::get("/{shop}/opening-hours", 'getOpeningHours')->name('get-opening-hours');
+    Route::put("/{shop}/update-cover-image", 'updateCoverImage')->name('update-cover-image');
+    Route::put("/{shop}/update-logo", 'updateLogo')->name('update-logo');
+    // Route::put("/{shop}/update-opening-hours", 'updateOpeningHours')->name('update-opening-hours');
+    // Route::get("/{shop}/opening-hours", 'getOpeningHours')->name('get-opening-hours');
 });
 
 /**

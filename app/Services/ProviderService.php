@@ -27,10 +27,22 @@ class ProviderService
     }
 
     /**
+     * Check a provider already exists
+     */
+    public function hasProvider($user_id)
+    {
+        if ($this->repository->find($user_id)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Activate a providers account
      */
     public function activateProvider($data)
     {
+        
         return $this->repository->createProvider($data);
     }
 

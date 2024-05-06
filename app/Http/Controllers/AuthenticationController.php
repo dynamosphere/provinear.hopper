@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
@@ -29,7 +30,7 @@ class AuthenticationController extends Controller
         $request->validate([
             'firstName'      => 'required|string|max:255',
             'lastName'      => 'required|string|max:255',
-            'email'     => 'required|email|string|max:255|unique:users',
+            'email'     => 'required|email|string|max:255|unique:user',
             'password'  => 'required|string|min:7'
           ]);
 
@@ -70,7 +71,7 @@ class AuthenticationController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function resendVerificationEmail(Request $request) {
-        if ($request->user()->hasVerifiedEmail()){
+        if (!$request->user()->hasVerifiedEmail()){
             $request->user()->sendEmailVerificationNotification();
         
             return response()->json([
@@ -211,9 +212,7 @@ class AuthenticationController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json([
-            "user" => $request->user()
-        ]);
+        return new UserResource($request->user());
     }
 
     /**
