@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Provider;
+use App\Notifications\Enums\TelegramMessageType;
+use App\Notifications\TelegramNotification;
 use App\Repositories\ProviderRepository;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +33,7 @@ class ProviderService
      */
     public function hasProvider($user_id)
     {
+        echo $this->repository->find($user_id);
         if ($this->repository->find($user_id)){
             return true;
         }
@@ -42,8 +45,12 @@ class ProviderService
      */
     public function activateProvider($data)
     {
+        $provider = $this->repository->createProvider($data);
+        if ($provider){
+            $provider->user->notify(new TelegramNotification(TelegramMessageType::PROVIDER_ACCOUNT_ACTIVATED));
+        }
         
-        return $this->repository->createProvider($data);
+        return $provider;
     }
 
     /***

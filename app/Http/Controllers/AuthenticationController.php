@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Notifications\Enums\TelegramMessageType;
+use App\Notifications\TelegramNotification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
@@ -19,6 +21,7 @@ class AuthenticationController extends Controller
 {
 
      /**
+     * @unauthenticated
      * Register a new user.
      *
      * @param Request $request The incoming request.
@@ -41,6 +44,9 @@ class AuthenticationController extends Controller
             'password'  => Hash::make($request->password)
         ]);
         event(new Registered($user));
+
+        $user->notify(new TelegramNotification(TelegramMessageType::NEW_USER));
+
         Auth::login($user);
         $token = $user->createToken($request->token_name ?: 'auth_token')->plainTextToken;
         return response()->json([
@@ -52,6 +58,20 @@ class AuthenticationController extends Controller
 
     /**
      * Verify the user's email address.
+     * 
+     * ⚠️ 
+     * The frontend does not necessary need to call this endpoint.
+     * 
+     * However the frontend have to provide a `/verify-email` route that accepts a `url` parameter
+     * This is because the Provinear application sends all email verification links in the form
+     * `https://frontendapplication.com/verify-email?url=https://backendapplication.com/api/email/verify/<id>/<hash>`
+     * The frontend application should get this url and make a `GET` request to it to verify the user's email.
+     * The url is encoded, so it needs to be decoded before been called. 
+     * 
+     * The frontend need not extract the `id` and `hash` from the url
+     * to call this endpoint directly, rather, make a `GET` request to the url in its decoded entirety.
+     * This is because the url is sensitive and signed.
+     * An error will be thrown if it is tampered with.
      *
      * @param EmailVerificationRequest $request
      * @return \Illuminate\Http\JsonResponse
@@ -66,6 +86,13 @@ class AuthenticationController extends Controller
 
     /**
      * Resend the verification email to the user.
+     * 
+     * Resend the verification email link to the user.
+     * 
+     * The Provinear application sends all email verification links in the form
+     * `https://frontendapplication.com/verify-email?url=https://backendapplication.com/api/email/verify/<id>/<hash>`
+     * The frontend application should get this url and make a `GET` request to it to verify the user's email.
+     * The url is encoded, so it needs to be decoded before been called.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -85,6 +112,7 @@ class AuthenticationController extends Controller
 
 
     /**
+     * @unauthenticated
      * Log in a user.
      * 
      * If the credential sent is valid, the access token will be returned. 
@@ -124,6 +152,7 @@ class AuthenticationController extends Controller
     }
 
     /**
+     * @unauthenticated
      * Send a password reset link to the given user.
      * 
      * The password reset link will be sent in the form of `https://frontendhost.com/reset-password?token='.$token`
@@ -163,6 +192,7 @@ class AuthenticationController extends Controller
     }
 
     /**
+     * @unauthenticated
      * Reset the a user's password using the token sent.
      *
      * @param  \Illuminate\Http\Request  $request
