@@ -29,6 +29,20 @@ Route::middleware('auth:sanctum')->group(function () {
     ->middleware(['throttle:6,1'])->name('verification.send');
 });
 
+/**
+ * User management
+ * 
+ * * user management
+ * - create user
+ * - suspend account 
+ * - update account
+ * - change and reset password
+ * - crud user contacts (can't update or delete except primary)
+ * - - crud delivery address info (can't update or delete primary)
+ * - get provider
+ */
+// Route::apiResource('users.delivery_addresses', DeliveryAddressController::class)->middleware('auth:sanctum')->prefix('provider')->name('provider.');
+
 /***
  * Provider Management
  */
@@ -118,7 +132,7 @@ Route::controller(ShopController::class)->middleware(['auth:sanctum', 'provider'
  * - update account
  * - change and reset password
  * - crud user contacts (can't update or delete except primary)
- * - - crud billing info (can't update or delete primary)
+ * - - crud delivery address info (can't update or delete primary)
  * - get provider
  * 
  * product exploration

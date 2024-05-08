@@ -24,6 +24,9 @@ class ProviderController extends Controller
     public function currentProvider(Request $request)
     {
         $provider = $request->user()->provider;
+        if (!$provider){
+            return response()->json(['message' => "Please activate a provider account first"], 403);
+        }
         return new ProviderResource($provider);
     }
 

@@ -41,7 +41,7 @@ class ProviderRepository
      */
 public function find ($user_id)
 {
-    return $this->provider->find(['user_id' => $user_id]);
+    return $this->provider->where('user_id', $user_id)->first();
 }
     /**
      * Create a new provider

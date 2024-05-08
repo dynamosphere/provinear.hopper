@@ -8,6 +8,7 @@
         "php": "^8.2",
         "dedoc/scramble": "^0.9.0",
         "doctrine/dbal": "^4.0",
+        "laravel-notification-channels/telegram": "^5.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
