@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\UserContactController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -24,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthenticationController::class, 'user']);
     Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
     Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'verifyEmail']
-    )->middleware(['signed'])->name('verification.verify');
+    )->middleware([])->name('verification.verify');
     Route::post('/email/verification-notification', [AuthenticationController::class, 'resendVerificationEmail'])
     ->middleware(['throttle:6,1'])->name('verification.send');
 });
@@ -41,7 +43,11 @@ Route::middleware('auth:sanctum')->group(function () {
  * - - crud delivery address info (can't update or delete primary)
  * - get provider
  */
-// Route::apiResource('users.delivery_addresses', DeliveryAddressController::class)->middleware('auth:sanctum')->prefix('provider')->name('provider.');
+Route::apiResource('users.contacts', UserContactController::class)->middleware(['auth:sanctum', 'owner'])->shallow();
+Route::apiResource('users.addresses', UserAddressController::class)->middleware(['auth:sanctum', 'owner'])->shallow();
+Route::post('/address/{address}/primary', [UserAddressController::class, 'makePrimary'])->middleware(['auth:sanctum', 'owner'])->name('addresses.setprimary');
+Route::get('users/{user}/addresses/primary', [UserAddressController::class, 'getPrimary'])->middleware(['auth:sanctum', 'owner'])->name('addresses.getprimary');
+
 
 /***
  * Provider Management
