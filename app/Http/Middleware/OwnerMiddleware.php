@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Middleware to check if the user making the request owns a resource
+ * 
+ * @deprecated Please use the appropraite policy to authorize access to resources
  */
 class OwnerMiddleware
 {

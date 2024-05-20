@@ -1,0 +1,5 @@
+1. Code Refactoring
+- [x] Implement gates and policies for authorization  instead of middlewares
+- [ ] Implement standard API response throught out application
+- [ ] Implement global exception handler(s)
+- [ ] Refactor services to throw custom exceptions instead of return null or false to controller

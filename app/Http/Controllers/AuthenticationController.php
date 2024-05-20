@@ -85,7 +85,7 @@ class AuthenticationController extends Controller
         }else{
             return response()->json([
                 "message" => "Your email is verified already"
-            ], 409);
+            ], 200);
         }
         return response()->json([
             "message" => "Email verified successfully"
@@ -115,7 +115,7 @@ class AuthenticationController extends Controller
         }
         return response()->json([
             "message" => "Your email is verified already"
-        ], 409);
+        ], 200);
     }
 
 
@@ -196,7 +196,7 @@ class AuthenticationController extends Controller
             "errors" => [
                 "email" => __($status)
             ]
-        ], 422);
+        ], 400);
     }
 
     /**
@@ -238,7 +238,7 @@ class AuthenticationController extends Controller
             "errors" => [
                 "email" => __($status)
             ]
-        ], 422);
+        ], 400);
     }
 
     /**

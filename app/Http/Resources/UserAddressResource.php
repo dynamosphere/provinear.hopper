@@ -25,7 +25,7 @@ class UserAddressResource extends JsonResource
             'postal_code'   => $this->postal_code,
             'phone'         => $this->phone,
             'is_primary'    => $this->is_primary,
-            'user'          => new UserResource($this->user),  
+            'user'          => new UserResource($this->whenLoaded('user')),  
         ];
     }
 }

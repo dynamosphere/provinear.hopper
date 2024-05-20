@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\UserAddressRepository;
 use App\Repositories\UserContactRepository;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
 
 class UserService
@@ -86,6 +87,8 @@ class UserService
     {
         if ($address->is_primary){
             throw new InvalidArgumentException("This address is already made primary");
+        }else{
+            throw new ModelNotFoundException("Address does not exist");
         }
         return $this->userAddressRepository->setPrimary($address->address_id);
     }

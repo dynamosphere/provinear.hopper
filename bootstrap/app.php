@@ -27,11 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
             TrustProxies::class => MyTrustProxies::class,
         ]);
         $middleware->trustHosts(at: [env('APP_HOST', 'localhost:8000')]);
-        $middleware->alias([
-            "provider" => UserIsAProvider::class,
-            "owner" => OwnerMiddleware::class,
-
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

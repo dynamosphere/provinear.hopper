@@ -43,10 +43,10 @@ Route::middleware('auth:sanctum')->group(function () {
  * - - crud delivery address info (can't update or delete primary)
  * - get provider
  */
-Route::apiResource('users.contacts', UserContactController::class)->middleware(['auth:sanctum', 'owner'])->shallow();
-Route::apiResource('users.addresses', UserAddressController::class)->middleware(['auth:sanctum', 'owner'])->shallow();
-Route::post('/address/{address}/primary', [UserAddressController::class, 'makePrimary'])->middleware(['auth:sanctum', 'owner'])->name('addresses.setprimary');
-Route::get('users/{user}/addresses/primary', [UserAddressController::class, 'getPrimary'])->middleware(['auth:sanctum', 'owner'])->name('addresses.getprimary');
+Route::apiResource('users.contacts', UserContactController::class)->middleware(['auth:sanctum'])->shallow();
+Route::apiResource('users.addresses', UserAddressController::class)->middleware(['auth:sanctum'])->shallow();
+Route::post('/address/{address}/primary', [UserAddressController::class, 'makePrimary'])->middleware(['auth:sanctum'])->name('addresses.setprimary');
+Route::get('users/{user}/addresses/primary', [UserAddressController::class, 'getPrimary'])->middleware(['auth:sanctum'])->name('addresses.getprimary');
 
 
 /***
@@ -61,8 +61,8 @@ Route::controller(ProviderController::class)->middleware('auth:sanctum')->prefix
 /**
  * Shop Management
  */
-Route::apiResource('providers.shops', ShopController::class)->middleware(['auth:sanctum', 'provider'])->shallow();
-Route::controller(ShopController::class)->middleware(['auth:sanctum', 'provider'])->prefix('shops')->name('shops.')->group(function () {
+Route::apiResource('providers.shops', ShopController::class)->middleware(['auth:sanctum'])->shallow();
+Route::controller(ShopController::class)->middleware(['auth:sanctum'])->prefix('shops')->name('shops.')->group(function () {
     Route::put("/{shop}/update-cover-image", 'updateCoverImage')->name('update-cover-image');
     Route::put("/{shop}/update-logo", 'updateLogo')->name('update-logo');
     // Route::put("/{shop}/update-opening-hours", 'updateOpeningHours')->name('update-opening-hours');

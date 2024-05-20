@@ -31,7 +31,6 @@ class ShopRequest extends FormRequest
             'shop_name' => 'required|unique:shop,shop_name'. $shopId ?? ',except,'.$shopId,
             'shop_description' => 'required|min:50|max:250',
             'address' => 'string|min:5|max:250|required',
-            'brand_logo' => 'image|mimes:png,jpg|size:2048|nullable',
             'brand_cover_image' => 'image|mimes:png,jpg|size:2048|nullable'
         ];
         

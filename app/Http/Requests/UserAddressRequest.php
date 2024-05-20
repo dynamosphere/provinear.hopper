@@ -29,7 +29,7 @@ class UserAddressRequest extends FormRequest
             'last_name'     => 'required|string|min:3|max:64|alpha',
             // or room number or building name
             'house_number'  => 'required|string|min:2|max:128',
-            'street'        => 'required|string|min:2|max:128',
+            'street'        => 'required|string|min:2|max:255',
             'city'          => ['required', new NigerianCityInState($this->input('state'))],
             'state'         => ['required', new NigerianState],
             'postal_code'   => 'digits:6',

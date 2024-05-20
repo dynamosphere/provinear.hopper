@@ -18,7 +18,7 @@ class UserContactResource extends JsonResource
             'id' => $this->contact_id,
             'type' => $this->type,
             'contact' => $this->contact,
-            'user' => new UserResource($this->user),
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

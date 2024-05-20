@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\UserAddress;
 use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
 class UserAddressController extends Controller
@@ -26,6 +28,8 @@ class UserAddressController extends Controller
      */
     public function index(User $user)
     {
+        Gate::authorize('user', $user);
+
         return UserAddressResource::collection($user->addresses);
     }
 
@@ -39,6 +43,8 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressRequest $request, User $user)
     {
+        Gate::authorize('user', $user);
+
         $data = $request->validated();
         $data['user_id'] = $user->user_id;
         $address = $this->userService->newUserAddress($data);
@@ -54,6 +60,8 @@ class UserAddressController extends Controller
      */
     public function show(UserAddress $address)
     {
+        Gate::authorize('view', $address);
+
         return new UserAddressResource($address);
     }
 
@@ -67,6 +75,8 @@ class UserAddressController extends Controller
      */
     public function update(UserAddressRequest $request, UserAddress $address)
     {
+        Gate::authorize('update', $address);
+
         $data = $request->validated();
         $this->userService->updateUserAddress($address, $data);
 
@@ -82,14 +92,17 @@ class UserAddressController extends Controller
      */
     public function makePrimary(UserAddress $address)
     {
+        Gate::authorize('setPrimary', $address);
+
         try{
             if ($this->userService->setAddressPrimary($address)){
                 return response()->json(['message' => 'Address made primary successfully'], 200);
             }
         }catch (InvalidArgumentException $e){
             return response()->json(['message' => $e->getMessage()], 409);
-        }
-        return response()->json(['message' => 'We couldn\'t make this address primary'], 422);
+        }catch (ModelNotFoundException $e){
+            return response()->json(['message' => $e->getMessage()], 404);
+        };
     }
 
     /**
@@ -99,6 +112,8 @@ class UserAddressController extends Controller
      */
     public function getPrimary(User $user)
     {
+        Gate::authorize('user', $user);
+
         return new UserAddressResource($this->userService->getPrimaryAddress($user));
     }
 
@@ -109,13 +124,15 @@ class UserAddressController extends Controller
      */
     public function destroy(UserAddress $address)
     {
+        Gate::authorize('delete', $address);
+
         try{
 
             if ($this->userService->deleteUserAddress($address))
             {
                 return response()->json([
                     'message' => 'Address deleted successfully'
-                ]);
+                ], 204);
             }
         }catch (AuthorizationException $e){
             return response()->json([

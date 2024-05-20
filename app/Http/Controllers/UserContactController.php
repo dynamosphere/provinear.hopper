@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserContact;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 
 class UserContactController extends Controller
@@ -27,6 +28,8 @@ class UserContactController extends Controller
      */
     public function store(Request $request, User $user)
     {
+        Gate::authorize('user', $user);
+
         $validated = $request->validate([
             'type' => ['required', 'string', new Enum(ContactType::class)],
             'contact' => 'string|max:255|min:11|required',
@@ -46,6 +49,8 @@ class UserContactController extends Controller
      */
     public function show(Request $request, UserContact $contact)
     {
+        Gate::authorize('view', $contact);
+
         return new UserContactResource($contact);
     }
 
@@ -56,6 +61,8 @@ class UserContactController extends Controller
      */
     public function update(Request $request, UserContact $contact)
     {
+        Gate::authorize('update', $contact);
+
         $validated = $request->validate([
             'type' => ['required', 'string', new Enum(ContactType::class)],
             'contact' => 'string|max:255|min:11|required',
@@ -71,6 +78,8 @@ class UserContactController extends Controller
      */
     public function index(Request $request, User $user)
     {
+        Gate::authorize('user', $user);
+
         return UserContactResource::collection($user->contacts);
     }
 
@@ -81,11 +90,13 @@ class UserContactController extends Controller
      */
     public function destroy(Request $request, UserContact $contact)
     {
+        Gate::authorize('delete', $contact);
+
         if ($this->userService->deleteUserContact($contact))
         {
             return response()->json([
                 'message' => 'Contact deleted successfully'
-            ]);
+            ], 402);
         }
     }
 }
