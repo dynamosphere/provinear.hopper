@@ -53,7 +53,7 @@ class TelegramNotification extends Notification
                 return TelegramMessage::create()
                 ->to(env('TELEGRAM_NOTIFICATION_GROUP_ID'))->content("🎉 **Provider Account Activated!** 🎉\n\n \
                 Hooray! This user just activated their Provider account. Something Hooge is coming! \
-                👤 **Name:** {$notifiable->first_name} {$notifiable->first_name}\n📧 **Email:** {$notifiable->email}\n\n🚀");
+                👤 **Name:** {$notifiable->first_name} {$notifiable->last_name}\n📧 **Email:** {$notifiable->email}\n\n🚀");
             // Add more cases for different message types
             
             default:

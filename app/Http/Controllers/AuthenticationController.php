@@ -60,25 +60,33 @@ class AuthenticationController extends Controller
      * Verify the user's email address.
      * 
      * ⚠️ 
-     * The frontend does not necessary need to call this endpoint.
+     * To verify an email.
      * 
-     * However the frontend have to provide a `/verify-email` route that accepts a `url` parameter
+     * The frontend have to provide a `/verify-email` route that accepts a `url` parameter
      * This is because the Provinear application sends all email verification links in the form
      * `https://frontendapplication.com/verify-email?url=https://backendapplication.com/api/email/verify/<id>/<hash>`
-     * The frontend application should get this url and make a `GET` request to it to verify the user's email.
-     * The url is encoded, so it needs to be decoded before been called. 
+     * The frontend application should get this url and make a application/json `GET` request to it to verify the user's email.
+     * Include Authorization token in your request
+     * The url sent is encoded, so it needs to be decoded before been called
      * 
-     * The frontend need not extract the `id` and `hash` from the url
+     * The frontend does not necessarily need not extract the `id` and `hash` from the url
      * to call this endpoint directly, rather, make a `GET` request to the url in its decoded entirety.
-     * This is because the url is sensitive and signed.
-     * An error will be thrown if it is tampered with.
+     * This is because the url has a signature.
      *
      * @param EmailVerificationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function verifyEmail(EmailVerificationRequest $request) {
-        $request->fulfill();
-        event(new Verified($request->user()));
+        
+        if (! $request->user()->hasVerifiedEmail()) {
+            $request->user()->markEmailAsVerified();
+
+            event(new Verified($request->user()));
+        }else{
+            return response()->json([
+                "message" => "Your email is verified already"
+            ], 200);
+        }
         return response()->json([
             "message" => "Email verified successfully"
         ], 202);
@@ -107,7 +115,7 @@ class AuthenticationController extends Controller
         }
         return response()->json([
             "message" => "Your email is verified already"
-        ], 409);
+        ], 200);
     }
 
 
@@ -188,7 +196,7 @@ class AuthenticationController extends Controller
             "errors" => [
                 "email" => __($status)
             ]
-        ], 422);
+        ], 400);
     }
 
     /**
@@ -230,7 +238,7 @@ class AuthenticationController extends Controller
             "errors" => [
                 "email" => __($status)
             ]
-        ], 422);
+        ], 400);
     }
 
     /**

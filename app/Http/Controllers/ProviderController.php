@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProviderResource;
 use App\Services\ProviderService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class ProviderController extends Controller
 {
+
     protected $service;
     public function __construct(ProviderService $service)
     {
@@ -70,7 +68,7 @@ class ProviderController extends Controller
         }
         return response()->json([
             "message" => "We could not update your profile picture",
-        ], 422);
+        ], 400);
     }
 
 }

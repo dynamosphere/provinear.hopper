@@ -105,4 +105,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasMany(BillingAddress::class, 'user_id', 'user_id');
     }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(UserAddress::class, 'user_id', 'user_id');
+    }
 }
