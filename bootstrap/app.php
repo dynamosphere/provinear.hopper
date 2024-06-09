@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\UserIsAnAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,6 +19,16 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('api')
                 ->prefix('api/v1')
                 ->group(base_path('routes/api.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/admin')
+                ->group(base_path('routes/admin.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/public')
+                ->group(base_path('routes/public.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/provider')
+                ->group(base_path('routes/provider.php'));
+
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -27,7 +38,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->trustHosts(at: [env('APP_HOST', 'localhost:8000')]);
         $middleware->alias([
-            "provider" => UserIsAProvider::class
+            "provider" => UserIsAProvider::class,
+            "admin"    => UserIsAnAdmin::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

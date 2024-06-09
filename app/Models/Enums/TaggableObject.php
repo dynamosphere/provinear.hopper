@@ -8,6 +8,7 @@ enum TaggableObject: string
     case PRODUCT = 'PRODUCT';
     case CATEGORY = 'CATEGORY';
     case SHOP = 'SHOP';
+    case PRODUCT_IMAGE = 'PRODUCT_IMAGE';
 
     public static function values(): array
     {

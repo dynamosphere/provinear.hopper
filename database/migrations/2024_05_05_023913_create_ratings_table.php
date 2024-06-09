@@ -16,9 +16,18 @@ return new class extends Migration
             $table->uuid('rating_id')->primary();
             $table->uuid('object_id')->nullable(false);
             $table->enum('object_type', RateableObject::values());
+            $table->integer('rate', false, true);
+            $table->foreignUuid('user_id')
+                ->nullable(false)
+                ->constrained('user', 'user_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnUpdate();
             $table->text('comment');
-            $table->integer('helpful_upvote_count', false, true);
-            $table->integer('helpful_downvote_count', false, true);
+            $table->foreignUuid('parent_id')
+                ->nullable()
+                ->constrained('rating', 'rating_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }

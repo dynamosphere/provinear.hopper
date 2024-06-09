@@ -76,6 +76,11 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         return $this->hasOne(Provider::class, 'user_id', 'user_id');
     }
 
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class, 'user_id', 'admin_id');
+    }
+
     public function userKyc(): Hasone
     {
         return $this->hasOne(UserKYC::class, 'user_id', 'user_id');
@@ -89,6 +94,11 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function tags(): HasMany
     {
         return $this->hasMany(Tag::class, 'owner_id', 'user_id');
+    }
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class, 'owner_id', 'user_id');
     }
 
     public function cart(): HasOne

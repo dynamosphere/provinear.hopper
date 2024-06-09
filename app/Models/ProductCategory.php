@@ -13,7 +13,6 @@ class ProductCategory extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $primaryKey = 'product_category_id';
     protected $table = 'product_category';
 
     protected $fillable = [

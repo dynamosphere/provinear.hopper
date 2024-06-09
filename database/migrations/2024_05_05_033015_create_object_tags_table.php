@@ -13,7 +13,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('object_tag', function (Blueprint $table) {
-            $table->uuid('object_tag_id')->primary();
             $table->uuid('object_id')->nullable(false);
             $table->foreignUuid('tag_id')
                 ->nullable(false)
@@ -21,6 +20,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->enum('object_type', TaggableObject::values());
+            $table->unique(['object_id', 'tag_id', 'object_type']);
             $table->timestamps();
         });
     }

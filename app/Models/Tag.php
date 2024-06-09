@@ -14,7 +14,6 @@ class Tag extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $primaryKey = 'tag_id';
-
     protected $table = 'tag';
 
     protected $fillable = [
