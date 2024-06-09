@@ -21,7 +21,7 @@ class ShopResource extends JsonResource
             'address' => $this->address,
             'brand_logo_url' => $this->brand_logo_url,
             'brand_cover_image_url' => $this->brand_cover_image_url,
-            'provider' => new ProviderResource($this->provider),
+            'provider' => new ProviderResource($this->whenLoaded('provider')),
         ];
     }
 }

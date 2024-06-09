@@ -17,3 +17,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+app/Traits/Translatable.php
+app/Traits/ConvertsExceptionToAPIResponse.php
+app/Traits/RendersAPIResponse.php
+app/Http/Response
+config/api_response.php

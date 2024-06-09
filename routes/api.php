@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Provider\ProviderCategoryProductController;
 use App\Http\Controllers\Provider\ProviderCategoryController;
+use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\UserContactController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -18,14 +20,14 @@ use Illuminate\Support\Facades\Route;
 /**
  * User Authentication
  */
-//Route::middleware('auth:sanctum')->group(function () {
-//    Route::get('/user', [AuthenticationController::class, 'user']);
-//    Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
-//    Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'verifyEmail']
-//    )->middleware(['signed'])->name('verification.verify');
-//    Route::post('/email/verification-notification', [AuthenticationController::class, 'resendVerificationEmail'])
-//    ->middleware(['throttle:6,1'])->name('verification.send');
-//});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthenticationController::class, 'user']);
+    Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
+    Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'verifyEmail']
+    )->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+    Route::post('/email/verification-notification', [AuthenticationController::class, 'resendVerificationEmail'])
+    ->middleware(['throttle:6,1'])->name('verification.send');
+});
 
 /**
  * User management
@@ -39,7 +41,11 @@ use Illuminate\Support\Facades\Route;
  * - - crud delivery address info (can't update or delete primary)
  * - get provider
  */
-// Route::apiResource('users.delivery_addresses', DeliveryAddressController::class)->middleware('auth:sanctum')->prefix('provider')->name('provider.');
+Route::apiResource('users.contacts', UserContactController::class)->middleware(['auth:sanctum'])->shallow();
+Route::apiResource('users.addresses', UserAddressController::class)->middleware(['auth:sanctum'])->shallow();
+Route::post('/address/{address}/primary', [UserAddressController::class, 'makePrimary'])->middleware(['auth:sanctum'])->name('addresses.setprimary');
+Route::get('users/{user}/addresses/primary', [UserAddressController::class, 'getPrimary'])->middleware(['auth:sanctum'])->name('addresses.getprimary');
+
 
 /***
  * Provider Management
@@ -53,34 +59,18 @@ use Illuminate\Support\Facades\Route;
 /**
  * Shop Management
  */
-//Route::apiResource('providers.shops', ShopController::class)->middleware(['auth:sanctum', 'provider'])->shallow();
-//Route::controller(ShopController::class)->middleware(['auth:sanctum', 'provider'])->prefix('shops')->name('shops.')->group(function () {
-//    Route::put("/{shop}/update-cover-image", 'updateCoverImage')->name('update-cover-image');
-//    Route::put("/{shop}/update-logo", 'updateLogo')->name('update-logo');
-//    // Route::put("/{shop}/update-opening-hours", 'updateOpeningHours')->name('update-opening-hours');
-//    // Route::get("/{shop}/opening-hours", 'getOpeningHours')->name('get-opening-hours');
-//});
+Route::apiResource('providers.shops', ShopController::class)->middleware(['auth:sanctum'])->shallow();
+Route::controller(ShopController::class)->middleware(['auth:sanctum'])->prefix('shops')->name('shops.')->group(function () {
+    Route::put("/{shop}/update-cover-image", 'updateCoverImage')->name('update-cover-image');
+    Route::put("/{shop}/update-logo", 'updateLogo')->name('update-logo');
+    // Route::put("/{shop}/update-opening-hours", 'updateOpeningHours')->name('update-opening-hours');
+    // Route::get("/{shop}/opening-hours", 'getOpeningHours')->name('get-opening-hours');
+});
 
-
-
-// Variation
-//Route::apiResource('variations', VariationController::class);
-
-// Tagging
-//Route::apiResource('tags', UserTagController::class)->middleware(['auth:sanctum', 'provider']);
-//Route::apiResource('users.tags', UserTagController::class);
-
-// Product and Variation
-//Route::apiResource('shops.products', ProviderShopProductController::class)->shallow()->middleware(['auth:sanctum', 'provider']);
-//Route::apiResource('products.variations', ProviderVariationController::class)->except('delete')->middleware(['auth:sanctum', 'provider']);
-
-// Admin
-// Product
-// Likes
-// Comment
-// Tags
-// Category
-// Variation
+/**
+ * Product Management
+ */
+// Route::apiResource('shops.products', ProductController::class)->shallow()->middleware(['auth:sanctum', 'provider']);
 
 
 

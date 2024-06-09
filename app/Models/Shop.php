@@ -53,6 +53,7 @@ class Shop extends Model
         return $this->hasMany(ShopOpeningHours::class, 'shop_id', 'shop_id');
     }
 
+
     public function url(): string
     {
         // To be implemented

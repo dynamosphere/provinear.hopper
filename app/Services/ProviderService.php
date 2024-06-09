@@ -33,7 +33,6 @@ class ProviderService
      */
     public function hasProvider($user_id)
     {
-        echo $this->repository->find($user_id);
         if ($this->repository->find($user_id)){
             return true;
         }

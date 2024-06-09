@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Middleware\TrustProxies;
 use App\Http\Middleware\MyTrustProxies;
+use App\Http\Middleware\OwnerMiddleware;
 use App\Http\Middleware\UserIsAProvider;
 
 return Application::configure(basePath: dirname(__DIR__))

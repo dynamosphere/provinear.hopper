@@ -49,6 +49,14 @@ class ShopService
     }
 
     /**
+     * Delete a shop
+     */
+    public function deleteShop($shop)
+    {
+        return $shop->delete();
+    }
+
+    /**
      * Create new shop for a provider
      */
     public function newShop($data)
