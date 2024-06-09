@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Provider\ProviderCategoryProductController;
-use App\Http\Controllers\Provider\ProviderCategoryController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserContactController;
 use Illuminate\Support\Facades\Route;
