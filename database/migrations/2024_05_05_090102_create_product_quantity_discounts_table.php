@@ -19,7 +19,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->integer('quantity', false, true)->default(0);
-            $table->decimal('percentage_discount', 10)->default(0.0);
+            $table->unsignedInteger('percentage_discount')->default(0);
             $table->boolean('available')->default(true);
             $table->timestamps();
         });

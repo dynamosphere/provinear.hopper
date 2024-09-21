@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Notifications\Enums\TelegramMessageType;
 use App\Notifications\TelegramNotification;
@@ -11,10 +11,10 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
@@ -94,10 +94,10 @@ class AuthenticationController extends Controller
 
     /**
      * Resend the verification email to the user.
-     * 
+     *
      * Resend the verification email link to the user.
-     * 
-     * The Provinear application sends all email verification links in the form
+     *
+     * The Province application sends all email verification links in the form
      * `https://frontendapplication.com/verify-email?url=https://backendapplication.com/api/email/verify/<id>/<hash>`
      * The frontend application should get this url and make a `GET` request to it to verify the user's email.
      * The url is encoded, so it needs to be decoded before been called.
@@ -108,7 +108,7 @@ class AuthenticationController extends Controller
     public function resendVerificationEmail(Request $request) {
         if (!$request->user()->hasVerifiedEmail()){
             $request->user()->sendEmailVerificationNotification();
-        
+
             return response()->json([
                 "message" => "Email verification link sent successfully"
             ], 200);
@@ -122,8 +122,8 @@ class AuthenticationController extends Controller
     /**
      * @unauthenticated
      * Log in a user.
-     * 
-     * If the credential sent is valid, the access token will be returned. 
+     *
+     * If the credential sent is valid, the access token will be returned.
      * This token has to be included in every request for authorization
      * by including the header - `Authorization: Bearer <access token here>`
      *
@@ -162,7 +162,7 @@ class AuthenticationController extends Controller
     /**
      * @unauthenticated
      * Send a password reset link to the given user.
-     * 
+     *
      * The password reset link will be sent in the form of `https://frontendhost.com/reset-password?token='.$token`
      * This means that the frontend app needs to have a route called `reset-password`.
      * This route will receive a `token` parameter that will be used later to verify the password reset request.
@@ -179,7 +179,7 @@ class AuthenticationController extends Controller
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
- 
+
         $status = Password::sendResetLink(
             $request->only('email')
         );
@@ -190,7 +190,7 @@ class AuthenticationController extends Controller
                 "status" => __($status)
             ]);
         }
-     
+
         return response()->json([
             "message" => "We could not send you a password reset link",
             "errors" => [
@@ -213,16 +213,16 @@ class AuthenticationController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
-     
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
-     
+
                 $user->save();
-     
+
                 event(new PasswordReset($user));
             }
         );

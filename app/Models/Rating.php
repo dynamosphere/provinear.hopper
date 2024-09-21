@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rating extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasLikes;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -18,8 +20,19 @@ class Rating extends Model
         'object_id',
         'object_type',
         'comment',
-        'helpful_upvote_count',
-        'helpful_downvote_count'
+        'rate',
+        'user_id',
+        'parent_id'
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Rating::class, 'parent_id', 'rating_id');
+    }
 
 }

@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\Shop;
 use App\Models\User;
+use App\Models\UserContact;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
 
@@ -34,5 +40,14 @@ class AppServiceProvider extends ServiceProvider
                 SecurityScheme::http('Bearer', 'bearer')
             );
         });
+
+        Relation::morphMap([
+            ProductImage::$morph_type_name  => ProductImage::class,
+            Product::$morph_type_name       => Product::class,
+            UserContact::$morph_type_name   => UserContact::class,
+            Category::$morph_type_name      => Category::class,
+            Shop::$morph_type_name          => Shop::class
+            // Add more mappings as needed for other models
+        ]);
     }
 }
